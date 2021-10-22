@@ -340,6 +340,14 @@
               </ul>
           </li>
           <li>
+            <a href="#answer" class="toc-h1 toc-link" data-title="Answer">Answer</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#submit-an-answer" class="toc-h2 toc-link" data-title="Submit an answer">Submit an answer</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
             <a href="#user" class="toc-h1 toc-link" data-title="User">User</a>
               <ul class="toc-list-h2">
                   <li>
@@ -350,6 +358,12 @@
                   </li>
                   <li>
                     <a href="#get-single-user" class="toc-h2 toc-link" data-title="Get single user">Get single user</a>
+                  </li>
+                  <li>
+                    <a href="#update-user" class="toc-h2 toc-link" data-title="Update user">Update user</a>
+                  </li>
+                  <li>
+                    <a href="#delete-user" class="toc-h2 toc-link" data-title="Delete user">Delete user</a>
                   </li>
               </ul>
           </li>
@@ -470,15 +484,15 @@ endpoint, with the token you want to revoke in the Authorization header.</p>
 <p>Your request:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="nx">flyerCode</span> <span class="o">=</span> <span class="nx">getFlyerCode</span><span class="p">();</span>
-<span class="kd">const</span> <span class="nx">userId</span> <span class="o">=</span> <span class="nx">getUserId</span><span class="p">();</span>
-<span class="kd">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">axios</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="s2">`/question/</span><span class="p">${</span><span class="nx">flyerCode</span><span class="p">}</span><span class="s2">?user_id=</span><span class="p">${</span><span class="nx">userId</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">userGuid</span> <span class="o">=</span> <span class="nx">getUserGuid</span><span class="p">();</span>
+<span class="kd">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">axios</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="s2">`/question/</span><span class="p">${</span><span class="nx">flyerCode</span><span class="p">}</span><span class="s2">?user_guid=</span><span class="p">${</span><span class="nx">userGuid</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
 </code></pre></div>
 <blockquote>
 <p>The above request returns JSON structured like this:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
   </span><span class="nl">"survey_execution_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">24</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"user_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"yourUserId"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"user_guid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"yourUserGuid"</span><span class="p">,</span><span class="w">
   </span><span class="nl">"questions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
     </span><span class="p">{</span><span class="w">
       </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
@@ -507,7 +521,7 @@ endpoint, with the token you want to revoke in the Authorization header.</p>
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>This endpoint should be called on opening of the survey to begin a survey execution. Make sure to save survey_execution_id
-in session storage to capture all answers within a single session - user_id is intended to be persisted between survey
+in session storage to capture all answers within a single session - user_guid is intended to be persisted between survey
 executions, i.e. in local storage.</p>
 
 <p>Some notes on the returned questions:</p>
@@ -530,6 +544,81 @@ executions, i.e. in local storage.</p>
 <td>user_id</td>
 <td>false</td>
 <td>user_id saved in localstorage from previous form executions - if not passed in a new user will be created</td>
+</tr>
+</tbody></table>
+<h1 id='answer'>Answer</h1><h2 id='submit-an-answer'>Submit an answer</h2>
+<blockquote>
+<p>Your request:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="p">{</span>
+  <span class="nx">surveyExecutionId</span><span class="p">,</span>
+  <span class="nx">userGuid</span><span class="p">,</span>
+  <span class="nx">flyerCode</span>
+<span class="p">}</span> <span class="o">=</span> <span class="nx">getSurveyExecutionDetails</span><span class="p">();</span>
+
+<span class="kd">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">axios</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s2">`/answer/</span><span class="p">${</span><span class="nx">flyerCode</span><span class="p">}</span><span class="s2">`</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">text</span><span class="p">:</span> <span class="dl">"</span><span class="s2">This is my answer</span><span class="dl">"</span><span class="p">,</span>
+  <span class="na">survey_execution_id</span><span class="p">:</span> <span class="nx">surveyExecutionId</span><span class="p">,</span>
+  <span class="na">user_guid</span><span class="p">:</span> <span class="nx">userGuid</span><span class="p">,</span>
+  <span class="na">question_id</span><span class="p">:</span> <span class="mi">2</span>
+<span class="p">});</span>
+</code></pre></div>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">19</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"question_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"survey_execution_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"question_answer_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2021-10-22T12:36:20.721Z"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2021-10-22T12:36:20.722Z"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"text"</span><span class="p">:</span><span class="w"> </span><span class="s2">"This is my answer"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Call this endpoint for every question in a survey execution. You need to pass in the survey_execution_id and user_guid
+that was given to you on requesting the questions initially. Bear in mind if there is already an answer saved for a
+question within the same survey execution, this will be overwritten.</p>
+<h3 id='http-request'>HTTP Request</h3>
+<p><code>GET /answer/:flyerCode</code></p>
+<h3 id='query-body'>Query Body</h3>
+<table><thead>
+<tr>
+<th>Prop</th>
+<th>Required</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>text</td>
+<td>false</td>
+<td>string</td>
+<td>Text value of the answer - this is used unless the question is multiple choice</td>
+</tr>
+<tr>
+<td>question_answer_id</td>
+<td>false</td>
+<td>number</td>
+<td>Multiple choice answer id</td>
+</tr>
+<tr>
+<td>survey_execution_id</td>
+<td>true</td>
+<td>number</td>
+<td>id given upon requesting survey questions</td>
+</tr>
+<tr>
+<td>user_guid</td>
+<td>true</td>
+<td>string</td>
+<td>guid given up requesting survey questions (this should be persisted on device permanently)</td>
+</tr>
+<tr>
+<td>question_id</td>
+<td>true</td>
+<td>number</td>
+<td>id of the question that the answer refers to</td>
 </tr>
 </tbody></table>
 <h1 id='user'>User</h1><h2 id='register-a-user'>Register a user</h2>
@@ -610,7 +699,7 @@ Only an admin with a SUPER role has the permission to create ADMIN or SUPER user
 <div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="nx">refreshToken</span> <span class="o">=</span> <span class="nx">getRefreshToken</span><span class="p">();</span>
 
 <span class="kd">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">axios</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">/user</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
-   <span class="na">Authorization</span><span class="p">:</span> <span class="s2">`Bearer </span><span class="p">${</span><span class="nx">refreshToken</span><span class="p">}</span><span class="s2">`</span>
+  <span class="na">Authorization</span><span class="p">:</span> <span class="s2">`Bearer </span><span class="p">${</span><span class="nx">refreshToken</span><span class="p">}</span><span class="s2">`</span>
 <span class="p">});</span>
 </code></pre></div>
 <blockquote>
@@ -665,7 +754,7 @@ This is a protected route - please provide an access token with your request
 <div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="nx">refreshToken</span> <span class="o">=</span> <span class="nx">getRefreshToken</span><span class="p">();</span>
 
 <span class="kd">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">axios</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">/user/22</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
-   <span class="na">Authorization</span><span class="p">:</span> <span class="s2">`Bearer </span><span class="p">${</span><span class="nx">refreshToken</span><span class="p">}</span><span class="s2">`</span>
+  <span class="na">Authorization</span><span class="p">:</span> <span class="s2">`Bearer </span><span class="p">${</span><span class="nx">refreshToken</span><span class="p">}</span><span class="s2">`</span>
 <span class="p">});</span>
 </code></pre></div>
 <blockquote>
@@ -683,6 +772,66 @@ This is a protected route - please provide an access token with your request
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div><h3 id='http-request-3'>HTTP Request</h3>
 <p><code>GET /user/:id</code></p>
+
+<aside class="warning">
+This is a protected route - please provide an access token with your request
+</aside>
+<h2 id='update-user'>Update user</h2>
+<blockquote>
+<p>Your request:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="nx">refreshToken</span> <span class="o">=</span> <span class="nx">getRefreshToken</span><span class="p">();</span>
+
+<span class="kd">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">axios</span><span class="p">.</span><span class="nx">patch</span><span class="p">(</span><span class="dl">'</span><span class="s1">/user/22</span><span class="dl">'</span><span class="p">,</span>
+  <span class="p">{</span>
+    <span class="na">first_name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">NewFirstName</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">email</span><span class="p">:</span> <span class="dl">'</span><span class="s1">newEmail@email.com</span><span class="dl">'</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="na">Authorization</span><span class="p">:</span> <span class="s2">`Bearer </span><span class="p">${</span><span class="nx">refreshToken</span><span class="p">}</span><span class="s2">`</span>
+  <span class="p">});</span>
+</code></pre></div>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">22</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"newEmail@email.com"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"first_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NewFirstName"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"last_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Henryson"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"user_role"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USER"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>To update any detail on your user, you must have ADMIN or SUPER permission, or be logged in as that user. Only admins
+with SUPER permission are allowed to change user_role status</p>
+<h3 id='http-request-4'>HTTP Request</h3>
+<p><code>PATCH /user/:id</code></p>
+
+<aside class="warning">
+This is a protected route - please provide an access token with your request
+</aside>
+<h2 id='delete-user'>Delete user</h2>
+<blockquote>
+<p>Your request:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="nx">refreshToken</span> <span class="o">=</span> <span class="nx">getRefreshToken</span><span class="p">();</span>
+
+<span class="kd">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">axios</span><span class="p">.</span><span class="k">delete</span><span class="p">(</span><span class="dl">'</span><span class="s1">/user/22</span><span class="dl">'</span><span class="p">,</span>
+  <span class="p">{</span>
+    <span class="na">Authorization</span><span class="p">:</span> <span class="s2">`Bearer </span><span class="p">${</span><span class="nx">refreshToken</span><span class="p">}</span><span class="s2">`</span>
+  <span class="p">});</span>
+</code></pre></div>
+<blockquote>
+<p>The above request returns a status 200 </p>
+</blockquote>
+
+<p>To delete your user, you must have ADMIN or SUPER permission, or be logged in as that user. Admins with SUPER permission 
+cannot be deleted without sending james@subtap.co.uk a grovelling email.</p>
+<h3 id='http-request-5'>HTTP Request</h3>
+<p><code>PATCH /user/:id</code></p>
 
 <aside class="warning">
 This is a protected route - please provide an access token with your request
