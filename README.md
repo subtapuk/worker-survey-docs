@@ -19,6 +19,12 @@ We support running Slate in three different ways:
 'includes' section
 - source/includes/: All docs sections are kept here
 
+## Dev server
+Once you've set it up, run the dev server using this command:
+```shell
+$ bundle exec middleman server
+```
+
 ## Deploying
 
 Super simple, run ./deploy.sh and bingo bongo! You're done-o!

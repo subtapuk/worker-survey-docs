@@ -7,8 +7,8 @@
 
 ```javascript
 const flyerCode = getFlyerCode();
-const userId = getUserId();
-const response = await axios.get(`/question/${flyerCode}?user_id=${userId}`);
+const userGuid = getUserGuid();
+const response = await axios.get(`/question/${flyerCode}?user_guid=${userGuid}`);
 ```
 
 > The above request returns JSON structured like this:
@@ -16,7 +16,7 @@ const response = await axios.get(`/question/${flyerCode}?user_id=${userId}`);
 ```json
 {
   "survey_execution_id": 24,
-  "user_id": "yourUserId",
+  "user_guid": "yourUserGuid",
   "questions": [
     {
       "id": 2,
@@ -46,7 +46,7 @@ const response = await axios.get(`/question/${flyerCode}?user_id=${userId}`);
 ```
 
 This endpoint should be called on opening of the survey to begin a survey execution. Make sure to save survey_execution_id
-in session storage to capture all answers within a single session - user_id is intended to be persisted between survey
+in session storage to capture all answers within a single session - user_guid is intended to be persisted between survey
 executions, i.e. in local storage.
 
 Some notes on the returned questions:

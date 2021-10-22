@@ -37,9 +37,9 @@ const response = await axios.post('/user', {
 
 Prop | Required | Type | Description
 --------- | -------- | ---- | ---------
-email | true | string | 
+email | true | string |
 password | true | string | A password with minimum 8 characters
-first_name | true | string | 
+first_name | true | string |
 last_name | true | string |
 user_role | false | enum("USER","ADMIN","SUPER") | Defaults to USER
 
@@ -55,7 +55,7 @@ Only an admin with a SUPER role has the permission to create ADMIN or SUPER user
 const refreshToken = getRefreshToken();
 
 const response = await axios.get('/user', {
-   Authorization: `Bearer ${refreshToken}`
+  Authorization: `Bearer ${refreshToken}`
 });
 ```
 
@@ -104,7 +104,7 @@ This is a protected route - please provide an access token with your request
 const refreshToken = getRefreshToken();
 
 const response = await axios.get('/user/22', {
-   Authorization: `Bearer ${refreshToken}`
+  Authorization: `Bearer ${refreshToken}`
 });
 ```
 
@@ -126,6 +126,75 @@ const response = await axios.get('/user/22', {
 ### HTTP Request
 
 `GET /user/:id`
+
+<aside class="warning">
+This is a protected route - please provide an access token with your request
+</aside>
+
+## Update user
+
+> Your request:
+
+```javascript
+const refreshToken = getRefreshToken();
+
+const response = await axios.patch('/user/22',
+  {
+    first_name: 'NewFirstName',
+    email: 'newEmail@email.com'
+  },
+  {
+    Authorization: `Bearer ${refreshToken}`
+  });
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "id": 22,
+  "email": "newEmail@email.com",
+  "first_name": "NewFirstName",
+  "last_name": "Henryson",
+  "user_role": {
+    "id": 1,
+    "name": "USER"
+  }
+}
+```
+
+To update any detail on your user, you must have ADMIN or SUPER permission, or be logged in as that user. Only admins
+with SUPER permission are allowed to change user_role status
+
+### HTTP Request
+
+`PATCH /user/:id`
+
+<aside class="warning">
+This is a protected route - please provide an access token with your request
+</aside>
+
+## Delete user
+
+> Your request:
+
+```javascript
+const refreshToken = getRefreshToken();
+
+const response = await axios.delete('/user/22',
+  {
+    Authorization: `Bearer ${refreshToken}`
+  });
+```
+
+> The above request returns a status 200 
+
+To delete your user, you must have ADMIN or SUPER permission, or be logged in as that user. Admins with SUPER permission 
+cannot be deleted without sending james@subtap.co.uk a grovelling email.
+
+### HTTP Request
+
+`PATCH /user/:id`
 
 <aside class="warning">
 This is a protected route - please provide an access token with your request
