@@ -9,7 +9,7 @@
             name="description"
         >
         <meta
-            content="Documentation for the Worker Feedback Club API"
+            content="Documentation for the Worker Feedback Club Survey API"
         >
     <title>API Reference</title>
 
@@ -318,20 +318,6 @@
             <a href="#introduction" class="toc-h1 toc-link" data-title="Introduction">Introduction</a>
           </li>
           <li>
-            <a href="#authentication" class="toc-h1 toc-link" data-title="Authentication">Authentication</a>
-              <ul class="toc-list-h2">
-                  <li>
-                    <a href="#login" class="toc-h2 toc-link" data-title="Login">Login</a>
-                  </li>
-                  <li>
-                    <a href="#requesting-access-tokens" class="toc-h2 toc-link" data-title="Requesting access tokens">Requesting access tokens</a>
-                  </li>
-                  <li>
-                    <a href="#revoking-refresh-tokens" class="toc-h2 toc-link" data-title="Revoking refresh tokens">Revoking refresh tokens</a>
-                  </li>
-              </ul>
-          </li>
-          <li>
             <a href="#question" class="toc-h1 toc-link" data-title="Question">Question</a>
               <ul class="toc-list-h2">
                   <li>
@@ -347,138 +333,19 @@
                   </li>
               </ul>
           </li>
-          <li>
-            <a href="#user" class="toc-h1 toc-link" data-title="User">User</a>
-              <ul class="toc-list-h2">
-                  <li>
-                    <a href="#register-a-user" class="toc-h2 toc-link" data-title="Register a user">Register a user</a>
-                  </li>
-                  <li>
-                    <a href="#get-all-users" class="toc-h2 toc-link" data-title="Get all users">Get all users</a>
-                  </li>
-                  <li>
-                    <a href="#get-single-user" class="toc-h2 toc-link" data-title="Get single user">Get single user</a>
-                  </li>
-                  <li>
-                    <a href="#update-user" class="toc-h2 toc-link" data-title="Update user">Update user</a>
-                  </li>
-                  <li>
-                    <a href="#delete-user" class="toc-h2 toc-link" data-title="Delete user">Delete user</a>
-                  </li>
-              </ul>
-          </li>
       </ul>
     </div>
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
         <h1 id='introduction'>Introduction</h1>
-<p>Hello and welcome to the Worker Feedback Club REST API! See below for a detailed explanation of all the available
+<p>Hello and welcome to the Worker Feedback Club Survey REST API! See below for a detailed explanation of all the available
 endpoints.</p>
 
 <p>This API shows examples using js and axios (mainly because that&#39;s what we use).</p>
 
 <p>If something isn&#39;t quite working the way you&#39;d expect it to, or this documentation is missing sufficient clarity please
 email james@subtap.co.uk. Thank you!</p>
-<h1 id='authentication'>Authentication</h1><h2 id='login'>Login</h2>
-<blockquote>
-<p>Your request:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">axios</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="dl">'</span><span class="s1">/auth/login</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
-    <span class="na">email</span><span class="p">:</span> <span class="dl">'</span><span class="s1">youremail@gmail.com</span><span class="dl">'</span><span class="p">,</span>
-    <span class="na">password</span><span class="p">:</span> <span class="dl">'</span><span class="s1">y0urPassw0rd</span><span class="dl">'</span>
-<span class="p">});</span>
-</code></pre></div>
-<blockquote>
-<p>The above request returns JSON structured like this:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="nl">"accessToken"</span><span class="p">:</span><span class="w"> </span><span class="s2">"yourAccessToken"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"refreshToken"</span><span class="p">:</span><span class="w"> </span><span class="s2">"yourRefreshToken"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"user"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"youremail@gmail.com"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2020-02-02 11:22:334"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"first_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"John"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"last_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Johnson"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"user_role"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ADMIN"</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div>
-<p>WFC uses an access/refresh token based authentication flow. First login using email/password credentials to receive your
-first set of tokens</p>
-<h3 id='http-request'>HTTP Request</h3>
-<p><code>POST /auth/login</code></p>
-<h3 id='query-body'>Query Body</h3>
-<table><thead>
-<tr>
-<th>Prop</th>
-<th>Required</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>email</td>
-<td>true</td>
-<td>string</td>
-<td>Email address used to register account</td>
-</tr>
-<tr>
-<td>password</td>
-<td>true</td>
-<td>string</td>
-<td>Password used to register account</td>
-</tr>
-</tbody></table>
-
-<aside class="notice">
-Save your refresh_token somewhere to avoid having to login with credentials in future
-</aside>
-<h2 id='requesting-access-tokens'>Requesting access tokens</h2>
-<blockquote>
-<p>Your request:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="nx">refreshToken</span> <span class="o">=</span> <span class="nx">getTokenFromStorage</span><span class="p">();</span>
-
-<span class="kd">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">axios</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">/auth/access-token</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
-  <span class="na">Authorization</span><span class="p">:</span> <span class="s2">`Bearer </span><span class="p">${</span><span class="nx">refreshToken</span><span class="p">}</span><span class="s2">`</span>
-<span class="p">});</span>
-</code></pre></div>
-<blockquote>
-<p>The above request returns JSON structured like this:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="nl">"accessToken"</span><span class="p">:</span><span class="w"> </span><span class="s2">"yourAccessToken"</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div>
-<p>To get your latest access token, you need to make a request to the endpoint below, including the refresh token in your
-Authorization header.
-Each access token will expire within an hour.</p>
-<h3 id='http-request-2'>HTTP Request</h3>
-<p><code>GET /auth/access-token</code></p>
-<h2 id='revoking-refresh-tokens'>Revoking refresh tokens</h2>
-<blockquote>
-<p>Your request:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="nx">refreshToken</span> <span class="o">=</span> <span class="nx">getTokenFromStorage</span><span class="p">();</span>
-
-<span class="kd">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">axios</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="dl">'</span><span class="s1">/auth/revoke-token</span><span class="dl">'</span><span class="p">,</span> <span class="p">{},</span> <span class="p">{</span>
-  <span class="na">Authorization</span><span class="p">:</span> <span class="s2">`Bearer </span><span class="p">${</span><span class="nx">refreshToken</span><span class="p">}</span><span class="s2">`</span>
-<span class="p">});</span>
-</code></pre></div>
-<blockquote>
-<p>If successful, you&#39;ll receive a status 200 OK</p>
-</blockquote>
-
-<p>By default, refresh tokens take a year to expire - so your user can stay &#39;logged in&#39; for a long time without having to
-fill in their credentials. If they want to log out of a device, you can revoke the refresh token by calling this
-endpoint, with the token you want to revoke in the Authorization header.</p>
-<h3 id='http-request-3'>HTTP Request</h3>
-<p><code>POST /auth/revoke-token</code></p>
 <h1 id='question'>Question</h1><h2 id='request-questions'>Request Questions</h2>
 <blockquote>
 <p>Your request:</p>
@@ -578,7 +445,7 @@ executions, i.e. in local storage.</p>
 </span></code></pre></div>
 <p>Call this endpoint for every question in a survey execution. You need to pass in the survey_execution_id and user_guid
 that was given to you on requesting the questions initially. Bear in mind if there is already an answer saved for a
-question within the same survey execution, this will be overwritten.</p>
+question within the same survey execution, this will be overwritten as the main answer (any unique previous answers are stored).</p>
 <h3 id='http-request'>HTTP Request</h3>
 <p><code>GET /answer/:flyerCode</code></p>
 <h3 id='query-body'>Query Body</h3>
@@ -621,221 +488,6 @@ question within the same survey execution, this will be overwritten.</p>
 <td>id of the question that the answer refers to</td>
 </tr>
 </tbody></table>
-<h1 id='user'>User</h1><h2 id='register-a-user'>Register a user</h2>
-<blockquote>
-<p>Your request:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">axios</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="dl">'</span><span class="s1">/user</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
-  <span class="na">email</span><span class="p">:</span> <span class="dl">'</span><span class="s1">user@gmail.com</span><span class="dl">'</span><span class="p">,</span>
-  <span class="na">password</span><span class="p">:</span> <span class="dl">'</span><span class="s1">y0urPassw0rd</span><span class="dl">'</span><span class="p">,</span>
-  <span class="na">first_name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Henry</span><span class="dl">"</span><span class="p">,</span>
-  <span class="na">last_name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Henryson</span><span class="dl">'</span><span class="p">,</span>
-  <span class="na">user_role</span><span class="p">:</span> <span class="dl">'</span><span class="s1">USER</span><span class="dl">'</span>
-<span class="p">});</span>
-</code></pre></div>
-<blockquote>
-<p>The above request returns JSON structured like this:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user@gmail.com"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"first_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Henry"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"last_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Henryson"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"user_role"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USER"</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div><h3 id='http-request'>HTTP Request</h3>
-<p><code>POST /user</code></p>
-<h3 id='query-body'>Query Body</h3>
-<table><thead>
-<tr>
-<th>Prop</th>
-<th>Required</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>email</td>
-<td>true</td>
-<td>string</td>
-<td></td>
-</tr>
-<tr>
-<td>password</td>
-<td>true</td>
-<td>string</td>
-<td>A password with minimum 8 characters</td>
-</tr>
-<tr>
-<td>first_name</td>
-<td>true</td>
-<td>string</td>
-<td></td>
-</tr>
-<tr>
-<td>last_name</td>
-<td>true</td>
-<td>string</td>
-<td></td>
-</tr>
-<tr>
-<td>user_role</td>
-<td>false</td>
-<td>enum(&quot;USER&quot;,&quot;ADMIN&quot;,&quot;SUPER&quot;)</td>
-<td>Defaults to USER</td>
-</tr>
-</tbody></table>
-
-<aside class="notice">
-Only an admin with a SUPER role has the permission to create ADMIN or SUPER users
-</aside>
-<h2 id='get-all-users'>Get all users</h2>
-<blockquote>
-<p>Your request:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="nx">refreshToken</span> <span class="o">=</span> <span class="nx">getRefreshToken</span><span class="p">();</span>
-
-<span class="kd">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">axios</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">/user</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
-  <span class="na">Authorization</span><span class="p">:</span> <span class="s2">`Bearer </span><span class="p">${</span><span class="nx">refreshToken</span><span class="p">}</span><span class="s2">`</span>
-<span class="p">});</span>
-</code></pre></div>
-<blockquote>
-<p>The above request returns JSON structured like this:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="nl">"page"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"totalPages"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"totalResults"</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"results"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="p">{</span><span class="w">
-      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user@gmail.com"</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"first_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Henry"</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"last_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Henryson"</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"user_role"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USER"</span><span class="w">
-      </span><span class="p">}</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-  </span><span class="p">]</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div><h3 id='http-request-2'>HTTP Request</h3>
-<p><code>GET /user</code></p>
-<h3 id='query-parameters'>Query Parameters</h3>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>page</td>
-<td>false</td>
-<td>page number, starting from 0 (defaults to 0)</td>
-</tr>
-<tr>
-<td>limit</td>
-<td>false</td>
-<td>number of records desired per page in response (defaults to 20)</td>
-</tr>
-</tbody></table>
-
-<aside class="warning">
-This is a protected route - please provide an access token with your request
-</aside>
-<h2 id='get-single-user'>Get single user</h2>
-<blockquote>
-<p>Your request:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="nx">refreshToken</span> <span class="o">=</span> <span class="nx">getRefreshToken</span><span class="p">();</span>
-
-<span class="kd">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">axios</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">/user/22</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
-  <span class="na">Authorization</span><span class="p">:</span> <span class="s2">`Bearer </span><span class="p">${</span><span class="nx">refreshToken</span><span class="p">}</span><span class="s2">`</span>
-<span class="p">});</span>
-</code></pre></div>
-<blockquote>
-<p>The above request returns JSON structured like this:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">22</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user@gmail.com"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"first_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Henry"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"last_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Henryson"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"user_role"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USER"</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div><h3 id='http-request-3'>HTTP Request</h3>
-<p><code>GET /user/:id</code></p>
-
-<aside class="warning">
-This is a protected route - please provide an access token with your request
-</aside>
-<h2 id='update-user'>Update user</h2>
-<blockquote>
-<p>Your request:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="nx">refreshToken</span> <span class="o">=</span> <span class="nx">getRefreshToken</span><span class="p">();</span>
-
-<span class="kd">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">axios</span><span class="p">.</span><span class="nx">patch</span><span class="p">(</span><span class="dl">'</span><span class="s1">/user/22</span><span class="dl">'</span><span class="p">,</span>
-  <span class="p">{</span>
-    <span class="na">first_name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">NewFirstName</span><span class="dl">'</span><span class="p">,</span>
-    <span class="na">email</span><span class="p">:</span> <span class="dl">'</span><span class="s1">newEmail@email.com</span><span class="dl">'</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="na">Authorization</span><span class="p">:</span> <span class="s2">`Bearer </span><span class="p">${</span><span class="nx">refreshToken</span><span class="p">}</span><span class="s2">`</span>
-  <span class="p">});</span>
-</code></pre></div>
-<blockquote>
-<p>The above request returns JSON structured like this:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">22</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"newEmail@email.com"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"first_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NewFirstName"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"last_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Henryson"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"user_role"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USER"</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div>
-<p>To update any detail on your user, you must have ADMIN or SUPER permission, or be logged in as that user. Only admins
-with SUPER permission are allowed to change user_role status</p>
-<h3 id='http-request-4'>HTTP Request</h3>
-<p><code>PATCH /user/:id</code></p>
-
-<aside class="warning">
-This is a protected route - please provide an access token with your request
-</aside>
-<h2 id='delete-user'>Delete user</h2>
-<blockquote>
-<p>Your request:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="nx">refreshToken</span> <span class="o">=</span> <span class="nx">getRefreshToken</span><span class="p">();</span>
-
-<span class="kd">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">axios</span><span class="p">.</span><span class="k">delete</span><span class="p">(</span><span class="dl">'</span><span class="s1">/user/22</span><span class="dl">'</span><span class="p">,</span>
-  <span class="p">{</span>
-    <span class="na">Authorization</span><span class="p">:</span> <span class="s2">`Bearer </span><span class="p">${</span><span class="nx">refreshToken</span><span class="p">}</span><span class="s2">`</span>
-  <span class="p">});</span>
-</code></pre></div>
-<blockquote>
-<p>The above request returns a status 200 </p>
-</blockquote>
-
-<p>To delete your user, you must have ADMIN or SUPER permission, or be logged in as that user. Admins with SUPER permission 
-cannot be deleted without sending james@subtap.co.uk a grovelling email.</p>
-<h3 id='http-request-5'>HTTP Request</h3>
-<p><code>PATCH /user/:id</code></p>
-
-<aside class="warning">
-This is a protected route - please provide an access token with your request
-</aside>
 
       </div>
       <div class="dark-box">
