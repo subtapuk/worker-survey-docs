@@ -35,7 +35,7 @@ const response = await axios.post(`/answer/${flyerCode}`, {
 
 Call this endpoint for every question in a survey execution. You need to pass in the survey_execution_id and user_guid
 that was given to you on requesting the questions initially. Bear in mind if there is already an answer saved for a
-question within the same survey execution, this will be overwritten.
+question within the same survey execution, this will be overwritten as the main answer (any unique previous answers are stored).
 
 ### HTTP Request
 
